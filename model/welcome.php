@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['Sid']){
+if(!empty($_SESSION['Sid'])){
     header('Location: ?p=tableauBord');
     exit();
 }
