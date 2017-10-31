@@ -12,6 +12,9 @@ if(!empty($_POST['email']) && !empty($_POST['mdp'])){
         $_SESSION['Sid'] = $info->id;
         header('Location: index.php?p=tableauBord');
     }
+    else{
+        header('Location: index.php?p=connection&erreur=identifiants non reconnus');
+    }
 
 }
 

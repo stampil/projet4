@@ -15,21 +15,27 @@ class MyPDO extends PDO {
         }
         $DB_HOST = 'localhost';
         $DB_PORT = '3306';
-        $DB_NAME = 'systeme';
+        $DB_NAME = 'meet';
         $DB_USER = 'root';
         $DB_PASS = '';
 
-        $path = 'mysql:host=' . $DB_HOST . ';port=' . $DB_PORT . ';dbname=' . $DB_NAME;
-
+        //$path = 'mysql:host=' . $DB_HOST . ';port=' . $DB_PORT . ';dbname=' . $DB_NAME;
+        $path = 'mysql:host=' . $DB_HOST . ';port=' . $DB_PORT;
         try{
             parent::__construct($path, $DB_USER, $DB_PASS, $options);
         }
         catch(Exception $e){
-                var_dump($e);
-                exit();
+                exit('Erreur de connexion à la BDD '.$DB_NAME.' sur la DB '.$DB_HOST.' avec l\'user '.$DB_USER.': '.$e->getMessage());
         }
         $this->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
         $this->query("SET NAMES 'utf8'");
+        $ret = $this->query("USE $DB_NAME");
+        if($ret==-1){
+            $ret2 = $this->query("CREATE DATABASE `$DB_NAME` /*!40100 DEFAULT CHARACTER SET utf8 */");
+            if($ret2!=-1) echo 'base '.$DB_NAME.' créée';
+            $this->query("USE $DB_NAME");
+            
+        }
     }
 
     public static function getInstance() {
